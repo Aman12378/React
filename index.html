@@ -3,11 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quiz</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Hello, github this is react and my first project from the local machine to clone on the github</h1>
-    <script src="script.js"></script>
+    <h1>QUIZ</h1>
+    <div id="quiz-container">
+        <!-- Quiz content will be injected here -->
+    </div>
+    <script>
+        // Questions array
+        const questions = [
+            {
+                question: "What is the capital of France?",
+                options: ["Paris", "London", "Berlin", "Madrid"],
+                answer: 0
+            },
+            {
+                question: "What is the largest planet in our solar system?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                answer: 2
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Jane Austen"],
+                answer: 1
+            },
+            {
+                question: "What is the chemical symbol for water?",
+                options: ["O2", "H2O", "CO2", "NaCl"],
+                answer: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion(index) {
+            const q = questions[index];
+            let html = `
+                <div class="question">
+                    <h2>Question ${index + 1}</h2>
+                    <h3>${q.question}</h3>
+                </div>
+                <ul class="options">
+                    ${q.options.map((opt, i) => `
+                        <li class="option">
+                            <input type="radio" id="option${i}" name="option" value="${i}">
+                            <label for="option${i}">${opt}</label>
+                        </li>
+                    `).join('')}
+                </ul>
+                <button id="next-button">Next</button>
+            `;
+            document.getElementById('quiz-container').innerHTML = html;
+            document.getElementById('next-button').onclick = nextQuestion;
+        }
+
+        function nextQuestion() {
+            const selected = document.querySelector('input[name="option"]:checked');
+            if (!selected) {
+                alert("Please select an option!");
+                return;
+            }
+            if (parseInt(selected.value) === questions[currentQuestion].answer) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion(currentQuestion);
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-container').innerHTML = `
+                <div class="question">
+                    <h2>Quiz Complete!</h2>
+                    <h3>Your score: ${score} / ${questions.length}</h3>
+                </div>
+            `;
+        }
+
+        // Initialize quiz
+        showQuestion(currentQuestion);
+    </script>
 </body>
 </html>

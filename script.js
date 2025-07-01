@@ -1,1 +1,0 @@
-alert("Hello, github this is react and my first project from the local machine to clone on the github");
